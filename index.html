@@ -198,8 +198,9 @@
       width: 0;
       background: var(--dorado);
       border-radius: 999px;
-      transition: width 1.2s ease-out;
+      animation: llenar 1.2s ease-out;
     }
+    @keyframes llenar { from { width: 0; } }
 
     .porcentaje {
       margin: 12px 0 32px;
@@ -295,19 +296,76 @@
        7. Responsable
        ========================================================= */
     .responsable { padding-bottom: 0; }
+    .responsable .etiqueta,
+    .integrantes .etiqueta { color: var(--verde-musgo); margin-bottom: 12px; }
     .tarjeta {
       border: 2px solid var(--verde-musgo);
       border-radius: 16px;
-      padding: 24px;
     }
-    .tarjeta .etiqueta { color: var(--verde-musgo); }
-    .tarjeta .nombre {
+
+    /* Tarjeta desplegable de persona (Chema e integrantes) */
+    .persona summary {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      cursor: pointer;
+      list-style: none;          /* quita el triángulo por defecto */
+      border-radius: 14px;
+    }
+    .persona summary::-webkit-details-marker { display: none; }
+    .persona summary:focus-visible { outline: 3px solid var(--dorado); outline-offset: 3px; }
+
+    .avatar {
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: grid;
+      place-items: center;
+      background: var(--verde-musgo);
+      color: var(--crema);
       font-family: var(--fuente-titulos);
-      font-size: 2.25rem;
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .persona .nombre {
+      font-family: var(--fuente-titulos);
+      font-size: 2rem;
       line-height: 1;
       letter-spacing: 0.02em;
       margin: 0;
     }
+
+    /* Flecha que gira al abrir */
+    .flecha-desplegar {
+      margin-left: auto;
+      flex-shrink: 0;
+      width: 12px;
+      height: 12px;
+      border-right: 3px solid var(--verde-musgo);
+      border-bottom: 3px solid var(--verde-musgo);
+      transform: translateY(-3px) rotate(45deg);   /* apunta hacia abajo */
+      transition: transform 0.2s ease;
+    }
+    .persona[open] .flecha-desplegar { transform: translateY(3px) rotate(225deg); } /* hacia arriba */
+
+    .persona__detalle {
+      border-top: 1px solid rgba(62, 92, 69, 0.25);
+      margin: 0 20px;
+      padding: 16px 0 20px;
+    }
+
+    /* Integrantes del grupo */
+    .integrantes { padding-bottom: 0; }
+    .lista-integrantes { display: grid; gap: 10px; }
+    .lista-integrantes .avatar { width: 44px; height: 44px; font-size: 1.35rem; }
+    .lista-integrantes .nombre { font-size: 1.6rem; }
+    .lista-integrantes summary { padding: 12px 16px; }
+    .lista-integrantes .persona__detalle { margin: 0 16px; }
+    .sin-descripcion { font-style: italic; opacity: 0.75; }
 
     /* =========================================================
        8. Redes
@@ -361,7 +419,8 @@
 
     /* Respeta a quien prefiere menos movimiento */
     @media (prefers-reduced-motion: reduce) {
-      .barra__relleno, .boton { transition: none; }
+      .barra__relleno { animation: none; }
+      .boton, .flecha-desplegar { transition: none; }
       .boton:hover { transform: none; }
     }
   </style>
@@ -404,7 +463,7 @@
         <div class="cifras">
           <div class="cifra">
             <p class="etiqueta">Recaudado</p>
-            <p class="monto" id="monto-recaudado">$0 MXN</p>
+            <p class="monto" id="monto-recaudado">$50 MXN</p>
           </div>
           <div class="cifra cifra--meta">
             <p class="etiqueta">Meta</p>
@@ -445,13 +504,30 @@
       </div>
     </section>
 
-    <!-- 7. Responsable -->
+    <!-- 7. Responsable (se despliega al presionarla) -->
     <section class="responsable" aria-labelledby="titulo-responsable">
       <div class="contenedor">
-        <div class="tarjeta">
-          <h2 id="titulo-responsable" class="etiqueta">Responsable</h2>
-          <p class="nombre">Encargado: Chema</p>
-        </div>
+        <h2 id="titulo-responsable" class="etiqueta">Responsable</h2>
+        <details class="tarjeta persona">
+          <summary>
+            <!-- Cuando tengas la foto: reemplaza el <span class="avatar"> por
+                 <img class="avatar" src="assets/chema.jpg" alt="Foto de Chema"> -->
+            <span class="avatar" aria-hidden="true">C</span>
+            <span class="nombre">Encargado: Chema</span>
+            <span class="flecha-desplegar" aria-hidden="true"></span>
+          </summary>
+          <div class="persona__detalle">
+            <p>Descripción de Chema.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 7b. Integrantes del grupo (la lista se llena desde el JavaScript: INTEGRANTES) -->
+    <section class="integrantes" aria-labelledby="titulo-integrantes">
+      <div class="contenedor">
+        <h2 id="titulo-integrantes" class="etiqueta">Integrantes del grupo</h2>
+        <div class="lista-integrantes" id="lista-integrantes"></div>
       </div>
     </section>
 
@@ -484,7 +560,23 @@
     // (solo números, sin comas ni signo de pesos)
     // =========================================================
     const META = 60000;
-    const RECAUDADO = 0;
+    const RECAUDADO = 50;
+
+    // =========================================================
+    // Integrantes del grupo
+    // Agrega una línea por persona. "descripcion" y "foto" son opcionales:
+    //   { nombre: "Ana", descripcion: "Texto breve", foto: "assets/ana.jpg" },
+    // =========================================================
+    const INTEGRANTES = [
+      { nombre: "Dano", descripcion: "", foto: "" },
+      { nombre: "Marco", descripcion: "", foto: "" },
+      { nombre: "Jin", descripcion: "", foto: "" },
+      { nombre: "Lalo", descripcion: "", foto: "" },
+      { nombre: "Sharon", descripcion: "", foto: "" },
+      { nombre: "Mariana", descripcion: "", foto: "" },
+      { nombre: "Isaac", descripcion: "", foto: "" },
+      { nombre: "Jared", descripcion: "", foto: "" }
+    ];
 
     // Enlace de pago de Mercado Pago. Mientras tenga el texto de ejemplo
     // o esté vacío, el botón muestra "Donativos próximamente".
@@ -515,7 +607,12 @@
       // Porcentaje real (puede pasar de 100%) y ancho de la barra (máximo 100%)
       const porcentaje = meta > 0 ? (recaudado / meta) * 100 : 0;
       const ancho = Math.min(porcentaje, 100);
-      const porcentajeTexto = Math.floor(porcentaje) + "%";
+      // Con montos pequeños se muestra un decimal (ej. 0.1%) para que no diga 0%
+      const porcentajeTexto = (porcentaje > 0 && porcentaje < 1)
+        ? Math.max(porcentaje, 0.1).toFixed(1) + "%"
+        : Math.floor(porcentaje) + "%";
+      // La barra se ve al menos un poquito en cuanto hay algún donativo
+      const anchoVisible = (ancho > 0 && ancho < 1.5) ? 1.5 : ancho;
 
       document.getElementById("monto-recaudado").textContent = pesos(recaudado);
       document.getElementById("monto-meta").textContent = pesos(meta);
@@ -526,10 +623,8 @@
       barra.setAttribute("aria-valuetext",
         porcentajeTexto + ": " + pesos(recaudado) + " de " + pesos(meta));
 
-      // Se aplica en el siguiente cuadro para que la barra se anime al cargar
-      requestAnimationFrame(function () {
-        document.getElementById("barra-relleno").style.width = ancho + "%";
-      });
+      // La animación de llenado la hace el CSS (@keyframes llenar)
+      document.getElementById("barra-relleno").style.width = anchoVisible + "%";
     }
 
     // ---------------------------------------------------------
@@ -584,9 +679,67 @@
       });
     }
 
+    // ---------------------------------------------------------
+    // Lista de integrantes (tarjetas desplegables)
+    // ---------------------------------------------------------
+    function pintarIntegrantes() {
+      const lista = document.getElementById("lista-integrantes");
+
+      INTEGRANTES.forEach(function (persona) {
+        const nombre = String(persona.nombre || "").trim();
+        if (!nombre) return;
+
+        const tarjeta = document.createElement("details");
+        tarjeta.className = "tarjeta persona";
+
+        const resumen = document.createElement("summary");
+
+        // Foto si existe; si no, la inicial del nombre
+        let avatar;
+        if (persona.foto) {
+          avatar = document.createElement("img");
+          avatar.src = persona.foto;
+          avatar.alt = "Foto de " + nombre;
+          avatar.width = 44;
+          avatar.height = 44;
+        } else {
+          avatar = document.createElement("span");
+          avatar.setAttribute("aria-hidden", "true");
+          avatar.textContent = nombre.charAt(0).toUpperCase();
+        }
+        avatar.className = "avatar";
+
+        const textoNombre = document.createElement("span");
+        textoNombre.className = "nombre";
+        textoNombre.textContent = nombre;
+
+        const flecha = document.createElement("span");
+        flecha.className = "flecha-desplegar";
+        flecha.setAttribute("aria-hidden", "true");
+
+        resumen.append(avatar, textoNombre, flecha);
+
+        const detalle = document.createElement("div");
+        detalle.className = "persona__detalle";
+        const parrafo = document.createElement("p");
+        const descripcion = String(persona.descripcion || "").trim();
+        if (descripcion) {
+          parrafo.textContent = descripcion;
+        } else {
+          parrafo.textContent = "Descripción próximamente.";
+          parrafo.className = "sin-descripcion";
+        }
+        detalle.append(parrafo);
+
+        tarjeta.append(resumen, detalle);
+        lista.append(tarjeta);
+      });
+    }
+
     pintarProgreso();
     prepararBotonDonar();
     prepararCopiarClabe();
+    pintarIntegrantes();
   </script>
 </body>
 </html>
