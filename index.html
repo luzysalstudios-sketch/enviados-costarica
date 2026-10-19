@@ -358,6 +358,42 @@
       padding: 16px 0 20px;
     }
 
+    /* Perfil desplegado de Chema: foto e introducción centradas */
+    .perfil { text-align: center; }
+    .perfil__foto {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 4px auto 16px;
+      border: 3px solid var(--dorado);
+    }
+    .perfil__intro { font-weight: 600; }
+    .perfil__lista {
+      text-align: left;
+      margin: 0 auto 16px;
+      padding: 0;
+      list-style: none;
+      max-width: 30rem;
+    }
+    .perfil__lista li {
+      position: relative;
+      padding: 8px 0 8px 22px;
+      border-top: 1px solid rgba(62, 92, 69, 0.15);
+    }
+    .perfil__lista li:first-child { border-top: 0; }
+    .perfil__lista li::before {      /* punto dorado como viñeta */
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 1.05em;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--dorado);
+    }
+    .perfil__cierre a { color: var(--verde-musgo); font-weight: 600; }
+
     /* Integrantes del grupo */
     .integrantes { padding-bottom: 0; }
     .lista-integrantes { display: grid; gap: 10px; }
@@ -510,14 +546,21 @@
         <h2 id="titulo-responsable" class="etiqueta">Responsable</h2>
         <details class="tarjeta persona">
           <summary>
-            <!-- Cuando tengas la foto: reemplaza el <span class="avatar"> por
-                 <img class="avatar" src="assets/chema.jpg" alt="Foto de Chema"> -->
-            <span class="avatar" aria-hidden="true">C</span>
+            <img class="avatar" src="assets/chema.jpg" width="52" height="52" alt="">
             <span class="nombre">Encargado: Chema</span>
             <span class="flecha-desplegar" aria-hidden="true"></span>
           </summary>
-          <div class="persona__detalle">
-            <p>Descripción de Chema.</p>
+          <div class="persona__detalle perfil">
+            <img class="perfil__foto" src="assets/chema.jpg" width="480" height="480"
+                 alt="Chema predicando en su iglesia">
+            <p class="perfil__intro">Hola, soy Chema. Tengo 26 años y desde hace casi tres años decidí vivir para la obra de Cristo a tiempo completo.</p>
+            <ul class="perfil__lista">
+              <li>Estudié dos años en el Instituto Bíblico Palabra de Vida México.</li>
+              <li>Con el instituto participé en viajes misioneros a Tamaulipas y Orizaba.</li>
+              <li>He servido con el ministerio “Happy Feet”.</li>
+              <li>Hoy sirvo en mi iglesia local y soy el líder encargado de este viaje a Costa Rica.</li>
+            </ul>
+            <p class="perfil__cierre">¿Quieres más información o saber cómo orar por nosotros? Escríbeme por Instagram en <a href="https://www.instagram.com/enviados.cvc" target="_blank" rel="noopener noreferrer">@enviados.cvc</a>.</p>
           </div>
         </details>
       </div>
@@ -575,7 +618,8 @@
       { nombre: "Sharon", descripcion: "", foto: "" },
       { nombre: "Mariana", descripcion: "", foto: "" },
       { nombre: "Isaac", descripcion: "", foto: "" },
-      { nombre: "Jared", descripcion: "", foto: "" }
+      { nombre: "Jared", descripcion: "", foto: "" },
+      { nombre: "Karlita", descripcion: "", foto: "" }
     ];
 
     // Enlace de pago de Mercado Pago. Mientras tenga el texto de ejemplo
