@@ -256,6 +256,35 @@
       transform: none;
     }
 
+    /* Datos de transferencia (CLABE) */
+    .donativos {
+      border: 1px solid rgba(245, 240, 230, 0.3);
+      border-radius: 16px;
+      padding: 24px 20px;
+    }
+    .donativos .etiqueta { color: var(--crema); margin-bottom: 16px; }
+    .datos { margin: 0 0 20px; }
+    .dato { padding: 10px 0; border-top: 1px solid rgba(245, 240, 230, 0.18); }
+    .dato:first-child { border-top: 0; padding-top: 0; }
+    .dato dt {
+      font-weight: 600;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--crema);
+      opacity: 0.85;
+    }
+    .dato dd { margin: 2px 0 0; font-size: 1.0625rem; font-weight: 600; overflow-wrap: anywhere; }
+    .dato .clabe {
+      color: var(--dorado);
+      font-size: clamp(1rem, 4.8vw, 1.6rem);
+      letter-spacing: 0.02em;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap; /* la CLABE siempre en una sola línea */
+      overflow-wrap: normal;
+    }
+    #zona-donar { margin-top: 16px; }
+
     .nota-donar {
       margin-top: 12px;
       font-size: 0.85rem;
@@ -353,16 +382,18 @@
     <!-- 2 y 3. Título principal y subtítulo -->
     <section class="portada">
       <div class="contenedor">
-        <h1>Cargando para salir a misionar</h1>
+        <h1>Misión Campamento Brittney</h1>
         <p class="etiqueta">Costa Rica · Enero 2027</p>
       </div>
     </section>
 
-    <!-- 4. ¿Para qué es? (texto provisional, se reemplaza con la leyenda final) -->
+    <!-- 4. ¿Para qué es? -->
     <section class="proposito" aria-labelledby="titulo-proposito">
       <div class="contenedor">
         <h2 id="titulo-proposito">¿Para qué es?</h2>
-        <p>Vamos a Costa Rica a servir en un campamento que atiende a cientos de niños. Recaudamos fondos para los boletos y los gastos del grupo. Los pasaportes los paga cada integrante.</p>
+        <p>Vamos a Costa Rica a servir en el Campamento Brittney, que atiende a cientos de niños de escasos recursos.</p>
+        <p>Estamos recaudando el dinero para los boletos de avión de los integrantes del grupo. Cada donativo, grande o pequeño, nos acerca a la meta.</p>
+        <p>Si no puedes donar, también nos ayudas orando por el viaje y compartiendo esta página.</p>
       </div>
     </section>
 
@@ -389,11 +420,29 @@
         </div>
         <p class="porcentaje"><strong id="porcentaje">0%</strong><span>de la meta</span></p>
 
-        <!-- Por defecto el botón está deshabilitado; el JavaScript lo activa si hay enlace de pago -->
-        <div id="zona-donar">
-          <button class="boton boton--donar" type="button" disabled>Donativos próximamente</button>
+        <!-- Datos para transferencia o depósito -->
+        <div class="donativos" aria-labelledby="titulo-donativos">
+          <h3 id="titulo-donativos" class="etiqueta">Donativos por transferencia</h3>
+          <dl class="datos">
+            <div class="dato">
+              <dt>CLABE</dt>
+              <dd class="clabe" id="clabe">722 969 01602597906 6</dd>
+            </div>
+            <div class="dato">
+              <dt>Beneficiario</dt>
+              <dd>Jose Maria Perez Jimenez</dd>
+            </div>
+            <div class="dato">
+              <dt>Institución</dt>
+              <dd>Mercado Pago W</dd>
+            </div>
+          </dl>
+          <button class="boton boton--donar" type="button" id="copiar-clabe">Copiar CLABE</button>
+          <p class="nota-donar" id="aviso-copiado" role="status" aria-live="polite"></p>
         </div>
-        <p class="nota-donar" id="nota-donar">Muy pronto podrás donar desde aquí. ¡Gracias por tu apoyo!</p>
+
+        <!-- Botón Donar con enlace de pago: solo aparece si PAYMENT_LINK tiene un enlace válido -->
+        <div id="zona-donar" hidden></div>
       </div>
     </section>
 
@@ -495,7 +544,7 @@
     }
 
     function prepararBotonDonar() {
-      if (!enlaceDePagoValido(PAYMENT_LINK)) return; // se queda "Donativos próximamente"
+      if (!enlaceDePagoValido(PAYMENT_LINK)) return; // sin enlace, solo se muestran los datos de transferencia
 
       const enlace = document.createElement("a");
       enlace.className = "boton boton--donar";
@@ -507,11 +556,38 @@
 
       const zona = document.getElementById("zona-donar");
       zona.replaceChildren(enlace);
-      document.getElementById("nota-donar").textContent = "El pago se hace de forma segura en Mercado Pago.";
+      zona.hidden = false;
+    }
+
+    // ---------------------------------------------------------
+    // Botón "Copiar CLABE" (copia los 18 dígitos sin espacios)
+    // ---------------------------------------------------------
+    function prepararCopiarClabe() {
+      const boton = document.getElementById("copiar-clabe");
+      const aviso = document.getElementById("aviso-copiado");
+      const clabe = document.getElementById("clabe").textContent.replace(/\s/g, "");
+
+      boton.addEventListener("click", async function () {
+        try {
+          await navigator.clipboard.writeText(clabe);
+          boton.textContent = "¡CLABE copiada!";
+          aviso.textContent = "Pégala en la app de tu banco. ¡Gracias por tu apoyo!";
+        } catch (error) {
+          // Si el navegador no permite copiar, se selecciona el número para copiarlo a mano
+          const rango = document.createRange();
+          rango.selectNodeContents(document.getElementById("clabe"));
+          const seleccion = window.getSelection();
+          seleccion.removeAllRanges();
+          seleccion.addRange(rango);
+          aviso.textContent = "Mantén presionado el número para copiarlo.";
+        }
+        setTimeout(function () { boton.textContent = "Copiar CLABE"; }, 2500);
+      });
     }
 
     pintarProgreso();
     prepararBotonDonar();
+    prepararCopiarClabe();
   </script>
 </body>
 </html>
