@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enviados | Misiones</title>
+  <meta name="description" content="Apoya la misión de Enviados a Costa Rica, enero 2027">
+  <meta name="theme-color" content="#3E5C45">
+
+  <!-- Favicon con el globo de Enviados (ruta relativa para GitHub Pages) -->
+  <link rel="icon" type="image/png" href="assets/globo.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <!-- Datos para cuando se comparte el enlace en redes -->
+  <meta property="og:title" content="Enviados | Misiones">
+  <meta property="og:description" content="Apoya la misión de Enviados a Costa Rica, enero 2027">
+  <meta property="og:type" content="website">
+
+  <!-- Tipografías del manual: Bebas Neue (títulos), Montserrat (texto) y Caveat (acentos) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       Colores de la marca (manual de identidad Enviados)
+       ========================================================= */
+    :root {
+      --verde-musgo: #3E5C45;  /* principal, secciones destacadas */
+      --crema: #F5F0E6;        /* fondo base */
+      --dorado: #E0A458;       /* acentos, cifras, barra de progreso */
+      --azul-pizarra: #3B4F5C; /* secundario, bloques de contraste */
+      --carbon: #1F1F1F;       /* texto corrido sobre crema */
+      --terracota: #B5583A;    /* solo avisos (opcional) */
+
+      --fuente-titulos: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+      --fuente-texto: "Montserrat", "Segoe UI", Arial, sans-serif;
+      --fuente-manuscrita: "Caveat", "Segoe Script", cursive;
+
+      --ancho-max: 640px;
+      --margen-lateral: 16px;
+    }
+
+    /* =========================================================
+       Base
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      background: var(--crema);
+      color: var(--carbon);
+      font-family: var(--fuente-texto);
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.6;
+      overflow-x: hidden; /* evita scroll horizontal en celular */
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* Contenedor centrado con 16px de margen lateral */
+    .contenedor {
+      width: 100%;
+      max-width: var(--ancho-max);
+      margin: 0 auto;
+      padding: 0 var(--margen-lateral);
+    }
+
+    section { padding: 56px 0; }
+
+    /* Títulos: Bebas Neue en mayúsculas */
+    h1, h2 {
+      font-family: var(--fuente-titulos);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: clamp(2.25rem, 8vw, 3rem);
+      color: var(--verde-musgo);
+      margin-bottom: 16px;
+    }
+
+    /* Subtítulos: Montserrat SemiBold en mayúsculas con espaciado amplio */
+    .etiqueta {
+      font-family: var(--fuente-texto);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.8rem;
+      margin: 0 0 8px;
+    }
+
+    p { margin: 0 0 16px; }
+    p:last-child { margin-bottom: 0; }
+
+    /* Foco visible para quien navega con teclado */
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--dorado);
+      outline-offset: 3px;
+    }
+
+    /* Enlace para saltar al contenido (accesibilidad) */
+    .saltar {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--carbon);
+      color: var(--crema);
+      padding: 8px 16px;
+      z-index: 10;
+    }
+    .saltar:focus { left: 16px; top: 16px; }
+
+    /* =========================================================
+       1. Encabezado con el logotipo
+       El PNG del logo ya trae alrededor un margen igual a la
+       altura de la "E", así que no se recorta ni se le pone sombra.
+       ========================================================= */
+    .encabezado {
+      background: var(--crema);
+      padding: 8px 0;
+    }
+    .encabezado .contenedor {
+      display: flex;
+      justify-content: center;
+    }
+    .logo {
+      width: 200px;          /* mayor que el mínimo digital de 120 px */
+      aspect-ratio: 1 / 1;   /* nunca se estira */
+      object-fit: contain;
+    }
+
+    /* =========================================================
+       2 y 3. Título principal y subtítulo
+       ========================================================= */
+    .portada {
+      background: var(--verde-musgo);
+      color: var(--crema);
+      text-align: center;
+      padding: 64px 0;
+    }
+    .portada h1 {
+      font-size: clamp(3.25rem, 15vw, 6rem);
+      color: var(--crema);
+    }
+    .portada .etiqueta {
+      color: var(--crema);
+      margin: 20px 0 0;
+      font-size: 0.9rem;
+    }
+
+    /* =========================================================
+       4. ¿Para qué es?
+       ========================================================= */
+    .proposito p { font-size: 1.0625rem; }
+
+    /* =========================================================
+       5 y 6. Barra de progreso y botón Donar
+       ========================================================= */
+    .progreso {
+      background: var(--azul-pizarra);
+      color: var(--crema);
+    }
+    .progreso h2 { color: var(--crema); }
+
+    .cifras {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .cifra .etiqueta { color: var(--crema); font-size: 0.7rem; margin-bottom: 2px; }
+    .cifra .monto {
+      font-family: var(--fuente-titulos);
+      color: var(--dorado);
+      font-size: clamp(2rem, 9vw, 2.75rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+    .cifra--meta { text-align: right; }
+
+    .barra {
+      height: 22px;
+      border-radius: 999px;
+      background: rgba(245, 240, 230, 0.18);
+      overflow: hidden;
+    }
+    .barra__relleno {
+      height: 100%;
+      width: 0;
+      background: var(--dorado);
+      border-radius: 999px;
+      transition: width 1.2s ease-out;
+    }
+
+    .porcentaje {
+      margin: 12px 0 32px;
+      font-family: var(--fuente-titulos);
+      color: var(--dorado);
+      font-size: 1.75rem;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .porcentaje span {
+      font-family: var(--fuente-texto);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--crema);
+      margin-left: 6px;
+    }
+
+    /* Botones (Donar e Instagram) */
+    .boton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 56px;
+      padding: 14px 24px;
+      border: 0;
+      border-radius: 999px;
+      font-family: var(--fuente-texto);
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+    .boton:hover { transform: translateY(-2px); }
+
+    .boton--donar {
+      background: var(--dorado);
+      color: var(--carbon); /* carbón sobre dorado: buen contraste */
+    }
+    .boton--donar:hover { background: #E8B571; }
+
+    /* Estado deshabilitado: "Donativos próximamente" */
+    .boton:disabled,
+    .boton[aria-disabled="true"] {
+      background: rgba(245, 240, 230, 0.16);
+      color: var(--crema);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .nota-donar {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      text-align: center;
+      color: var(--crema);
+    }
+
+    /* =========================================================
+       7. Responsable
+       ========================================================= */
+    .responsable { padding-bottom: 0; }
+    .tarjeta {
+      border: 2px solid var(--verde-musgo);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .tarjeta .etiqueta { color: var(--verde-musgo); }
+    .tarjeta .nombre {
+      font-family: var(--fuente-titulos);
+      font-size: 2.25rem;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      margin: 0;
+    }
+
+    /* =========================================================
+       8. Redes
+       ========================================================= */
+    .redes .etiqueta { color: var(--verde-musgo); }
+    .boton--instagram {
+      background: var(--verde-musgo);
+      color: var(--crema);
+      text-transform: none;
+      letter-spacing: 0.02em;
+      font-size: 1.125rem;
+      justify-content: flex-start;
+      padding: 10px 24px 10px 10px;
+    }
+    .boton--instagram:hover { background: #34503B; }
+    .boton--instagram img {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      background: var(--crema);
+      border-radius: 50%;
+      padding: 3px;
+    }
+    .boton--instagram .flecha { margin-left: auto; font-size: 1.25rem; }
+
+    /* =========================================================
+       9. Pie de página
+       ========================================================= */
+    .pie {
+      background: var(--verde-musgo);
+      color: var(--crema);
+      text-align: center;
+      padding: 48px 0;
+    }
+    .pie .frase {
+      font-family: var(--fuente-manuscrita);
+      font-weight: 600;
+      font-size: 2rem;
+      line-height: 1.2;
+      color: var(--dorado);
+      margin: 0 0 12px;
+    }
+    .pie .etiqueta { color: var(--crema); margin: 0; }
+
+    /* Pantallas grandes: un poco más de aire */
+    @media (min-width: 768px) {
+      section { padding: 72px 0; }
+      .logo { width: 240px; }
+      .portada { padding: 88px 0; }
+    }
+
+    /* Respeta a quien prefiere menos movimiento */
+    @media (prefers-reduced-motion: reduce) {
+      .barra__relleno, .boton { transition: none; }
+      .boton:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <!-- 1. Encabezado -->
+  <header class="encabezado">
+    <div class="contenedor">
+      <img class="logo" src="assets/logo-completo.png" width="640" height="640"
+           alt="Enviados: logotipo con un globo terráqueo verde, una ruta dorada y la palabra ENVIADOS">
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- 2 y 3. Título principal y subtítulo -->
+    <section class="portada">
+      <div class="contenedor">
+        <h1>Cargando para salir a misionar</h1>
+        <p class="etiqueta">Costa Rica · Enero 2027</p>
+      </div>
+    </section>
+
+    <!-- 4. ¿Para qué es? (texto provisional, se reemplaza con la leyenda final) -->
+    <section class="proposito" aria-labelledby="titulo-proposito">
+      <div class="contenedor">
+        <h2 id="titulo-proposito">¿Para qué es?</h2>
+        <p>Vamos a Costa Rica a servir en un campamento que atiende a cientos de niños. Recaudamos fondos para los boletos y los gastos del grupo. Los pasaportes los paga cada integrante.</p>
+      </div>
+    </section>
+
+    <!-- 5 y 6. Barra de progreso y botón Donar -->
+    <section class="progreso" aria-labelledby="titulo-progreso">
+      <div class="contenedor">
+        <h2 id="titulo-progreso">Así vamos</h2>
+
+        <div class="cifras">
+          <div class="cifra">
+            <p class="etiqueta">Recaudado</p>
+            <p class="monto" id="monto-recaudado">$0 MXN</p>
+          </div>
+          <div class="cifra cifra--meta">
+            <p class="etiqueta">Meta</p>
+            <p class="monto" id="monto-meta">$60,000 MXN</p>
+          </div>
+        </div>
+
+        <div class="barra" id="barra" role="progressbar"
+             aria-label="Avance de la recaudación"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="barra__relleno" id="barra-relleno"></div>
+        </div>
+        <p class="porcentaje"><strong id="porcentaje">0%</strong><span>de la meta</span></p>
+
+        <!-- Por defecto el botón está deshabilitado; el JavaScript lo activa si hay enlace de pago -->
+        <div id="zona-donar">
+          <button class="boton boton--donar" type="button" disabled>Donativos próximamente</button>
+        </div>
+        <p class="nota-donar" id="nota-donar">Muy pronto podrás donar desde aquí. ¡Gracias por tu apoyo!</p>
+      </div>
+    </section>
+
+    <!-- 7. Responsable -->
+    <section class="responsable" aria-labelledby="titulo-responsable">
+      <div class="contenedor">
+        <div class="tarjeta">
+          <h2 id="titulo-responsable" class="etiqueta">Responsable</h2>
+          <p class="nombre">Encargado: Chema</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Redes -->
+    <section class="redes" aria-labelledby="titulo-redes">
+      <div class="contenedor">
+        <h2 id="titulo-redes" class="etiqueta">Síguenos en Instagram</h2>
+        <a class="boton boton--instagram" href="https://www.instagram.com/enviados.cvc"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Abrir @enviados.cvc en Instagram (se abre en una pestaña nueva)">
+          <img src="assets/globo.png" width="44" height="44" alt="">
+          <span>@enviados.cvc</span>
+          <span class="flecha" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- 9. Pie de página -->
+  <footer class="pie">
+    <div class="contenedor">
+      <p class="frase">Conócelo. Vívelo. Compártelo.</p>
+      <p class="etiqueta">Enviados · Misiones</p>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================
+    // Cambia aquí la meta y el monto recaudado
+    // (solo números, sin comas ni signo de pesos)
+    // =========================================================
+    const META = 60000;
+    const RECAUDADO = 0;
+
+    // Enlace de pago de Mercado Pago. Mientras tenga el texto de ejemplo
+    // o esté vacío, el botón muestra "Donativos próximamente".
+    const PAYMENT_LINK = "PEGAR_LINK_DE_MERCADO_PAGO_AQUI";
+
+    // ---------------------------------------------------------
+    // Formato de pesos mexicanos: $60,000 MXN
+    // ---------------------------------------------------------
+    const formatoPesos = new Intl.NumberFormat("es-MX", {
+      style: "currency",
+      currency: "MXN",
+      currencyDisplay: "narrowSymbol",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+
+    function pesos(cantidad) {
+      return formatoPesos.format(cantidad) + " MXN";
+    }
+
+    // ---------------------------------------------------------
+    // Barra de progreso
+    // ---------------------------------------------------------
+    function pintarProgreso() {
+      const meta = Math.max(Number(META) || 0, 0);
+      const recaudado = Math.max(Number(RECAUDADO) || 0, 0);
+
+      // Porcentaje real (puede pasar de 100%) y ancho de la barra (máximo 100%)
+      const porcentaje = meta > 0 ? (recaudado / meta) * 100 : 0;
+      const ancho = Math.min(porcentaje, 100);
+      const porcentajeTexto = Math.floor(porcentaje) + "%";
+
+      document.getElementById("monto-recaudado").textContent = pesos(recaudado);
+      document.getElementById("monto-meta").textContent = pesos(meta);
+      document.getElementById("porcentaje").textContent = porcentajeTexto;
+
+      const barra = document.getElementById("barra");
+      barra.setAttribute("aria-valuenow", String(Math.round(ancho)));
+      barra.setAttribute("aria-valuetext",
+        porcentajeTexto + ": " + pesos(recaudado) + " de " + pesos(meta));
+
+      // Se aplica en el siguiente cuadro para que la barra se anime al cargar
+      requestAnimationFrame(function () {
+        document.getElementById("barra-relleno").style.width = ancho + "%";
+      });
+    }
+
+    // ---------------------------------------------------------
+    // Botón Donar
+    // ---------------------------------------------------------
+    function enlaceDePagoValido(enlace) {
+      const texto = String(enlace || "").trim();
+      if (texto === "" || texto.includes("PEGAR_LINK")) return false;
+      // Solo se aceptan enlaces seguros (https)
+      return /^https:\/\/\S+$/i.test(texto);
+    }
+
+    function prepararBotonDonar() {
+      if (!enlaceDePagoValido(PAYMENT_LINK)) return; // se queda "Donativos próximamente"
+
+      const enlace = document.createElement("a");
+      enlace.className = "boton boton--donar";
+      enlace.href = PAYMENT_LINK.trim();
+      enlace.target = "_blank";
+      enlace.rel = "noopener noreferrer";
+      enlace.textContent = "Donar";
+      enlace.setAttribute("aria-label", "Donar con Mercado Pago (se abre en una pestaña nueva)");
+
+      const zona = document.getElementById("zona-donar");
+      zona.replaceChildren(enlace);
+      document.getElementById("nota-donar").textContent = "El pago se hace de forma segura en Mercado Pago.";
+    }
+
+    pintarProgreso();
+    prepararBotonDonar();
+  </script>
+</body>
+</html>
