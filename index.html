@@ -132,9 +132,8 @@
       justify-content: center;
     }
     .logo {
-      width: 200px;          /* mayor que el mínimo digital de 120 px */
-      aspect-ratio: 1 / 1;   /* nunca se estira */
-      object-fit: contain;
+      width: 200px;          /* el logotipo mide ~144 px, mayor que el mínimo digital de 120 px */
+      height: auto;          /* conserva su proporción: nunca se estira */
     }
 
     /* =========================================================
@@ -373,7 +372,7 @@
   <!-- 1. Encabezado -->
   <header class="encabezado">
     <div class="contenedor">
-      <img class="logo" src="assets/logo-completo.png" width="640" height="640"
+      <img class="logo" src="assets/logo-completo.png?v=2" width="681" height="774"
            alt="Enviados: logotipo con un globo terráqueo verde, una ruta dorada y la palabra ENVIADOS">
     </div>
   </header>
