@@ -393,6 +393,31 @@
       background: var(--dorado);
     }
     .perfil__cierre a { color: var(--verde-musgo); font-weight: 600; }
+    .perfil__subtitulo {
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--verde-musgo);
+      margin: 20px 0 8px;
+    }
+    .perfil__texto { text-align: left; max-width: 30rem; margin-left: auto; margin-right: auto; }
+    .perfil__versiculo {
+      margin: 20px auto 0;
+      padding: 16px;
+      max-width: 30rem;
+      border-radius: 12px;
+      background: var(--verde-musgo);
+      color: var(--crema);
+    }
+    .perfil__versiculo p { font-weight: 600; font-size: 1.125rem; margin: 0 0 4px; }
+    .perfil__versiculo cite {
+      font-style: normal;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dorado);
+    }
 
     /* Integrantes del grupo */
     .integrantes { padding-bottom: 0; }
@@ -607,11 +632,29 @@
 
     // =========================================================
     // Integrantes del grupo
-    // Agrega una línea por persona. "descripcion" y "foto" son opcionales:
+    // Agrega una línea por persona. Todo menos "nombre" es opcional:
     //   { nombre: "Ana", descripcion: "Texto breve", foto: "assets/ana.jpg" },
+    // Para un perfil completo (como el de Dano) puedes usar:
+    //   intro, listaTitulo, lista: [...], porQue: [...], versiculo, cita
     // =========================================================
     const INTEGRANTES = [
-      { nombre: "Dano", descripcion: "", foto: "" },
+      {
+        nombre: "Dano",
+        foto: "assets/dano.jpg",
+        intro: "¡Hola! Soy Daniel García, pero me dicen Dano. Hace unos seis meses, en un campamento de Palabra de Vida, entregué mi corazón por completo a Jesucristo y decidí vivir para servirle.",
+        listaTitulo: "Hoy sirvo en",
+        lista: [
+          "Audio y Video, Multimedia y Redes Sociales.",
+          "El ministerio de jóvenes TRIBU +18."
+        ],
+        porQue: [
+          "Un día le dije a Dios: “Aquí está mi vida, úsame como Tú quieras y llévame a donde Tú quieras”. Este viaje es mi oportunidad de responder a esa oración.",
+          "No voy porque sea perfecto ni porque tenga todas las respuestas. Voy porque Cristo me amó primero, transformó mi vida y quiero compartir ese amor.",
+          "Mi mayor deseo es que los niños y cada persona que conozcamos vean a Jesús, no solo en nuestras palabras, sino en nuestra manera de amar y servir."
+        ],
+        versiculo: "Heme aquí, envíame a mí.",
+        cita: "Isaías 6:8"
+      },
       { nombre: "Marco", descripcion: "", foto: "" },
       { nombre: "Jin", descripcion: "", foto: "" },
       { nombre: "Lalo", descripcion: "", foto: "" },
@@ -765,15 +808,54 @@
 
         const detalle = document.createElement("div");
         detalle.className = "persona__detalle";
-        const parrafo = document.createElement("p");
-        const descripcion = String(persona.descripcion || "").trim();
-        if (descripcion) {
-          parrafo.textContent = descripcion;
-        } else {
-          parrafo.textContent = "Descripción próximamente.";
-          parrafo.className = "sin-descripcion";
+
+        // Pequeña ayuda para crear elementos con clase y texto
+        function crear(etiqueta, clase, texto) {
+          const el = document.createElement(etiqueta);
+          if (clase) el.className = clase;
+          if (texto) el.textContent = texto;
+          return el;
         }
-        detalle.append(parrafo);
+
+        if (persona.intro) {
+          // Perfil completo: foto grande, intro, lista, por qué voy y versículo
+          detalle.classList.add("perfil");
+          if (persona.foto) {
+            const foto = crear("img", "perfil__foto");
+            foto.src = persona.foto;
+            foto.alt = "Foto de " + nombre;
+            foto.width = 480;
+            foto.height = 480;
+            foto.loading = "lazy";
+            detalle.append(foto);
+          }
+          detalle.append(crear("p", "perfil__intro", persona.intro));
+
+          if (Array.isArray(persona.lista) && persona.lista.length) {
+            if (persona.listaTitulo) detalle.append(crear("p", "perfil__subtitulo", persona.listaTitulo));
+            const ul = crear("ul", "perfil__lista");
+            persona.lista.forEach(function (item) { ul.append(crear("li", "", item)); });
+            detalle.append(ul);
+          }
+
+          if (Array.isArray(persona.porQue) && persona.porQue.length) {
+            detalle.append(crear("p", "perfil__subtitulo", "¿Por qué voy a Costa Rica?"));
+            persona.porQue.forEach(function (texto) { detalle.append(crear("p", "perfil__texto", texto)); });
+          }
+
+          if (persona.versiculo) {
+            const cita = crear("blockquote", "perfil__versiculo");
+            cita.append(crear("p", "", "“" + persona.versiculo + "”"));
+            if (persona.cita) cita.append(crear("cite", "", persona.cita));
+            detalle.append(cita);
+          }
+        } else {
+          // Descripción breve (o aviso si todavía no hay)
+          const descripcion = String(persona.descripcion || "").trim();
+          detalle.append(descripcion
+            ? crear("p", "", descripcion)
+            : crear("p", "sin-descripcion", "Descripción próximamente."));
+        }
 
         tarjeta.append(resumen, detalle);
         lista.append(tarjeta);
