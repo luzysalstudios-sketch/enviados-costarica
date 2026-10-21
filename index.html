@@ -140,7 +140,11 @@
        2 y 3. Título principal y subtítulo
        ========================================================= */
     .portada {
-      background: var(--verde-musgo);
+      /* Foto del grupo difuminada con capa verde musgo al 70% (regla del manual para fotos) */
+      background:
+        linear-gradient(rgba(62, 92, 69, 0.7), rgba(62, 92, 69, 0.7)),
+        url("assets/portada-fondo.jpg") 72% 30% / cover no-repeat,
+        var(--verde-musgo);
       color: var(--crema);
       text-align: center;
       padding: 64px 0;
@@ -159,6 +163,19 @@
        4. ¿Para qué es?
        ========================================================= */
     .proposito p { font-size: 1.0625rem; }
+
+    /* Enlace al sitio oficial del campamento */
+    .enlace-campamento { margin-top: 24px; }
+    .enlace-campamento a {
+      display: inline-block;
+      color: var(--verde-musgo);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: var(--dorado);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+    .nota-enlace { display: block; font-size: 0.8rem; opacity: 0.75; margin-top: 2px; }
 
     /* =========================================================
        5 y 6. Barra de progreso y botón Donar
@@ -513,6 +530,12 @@
         <p>Vamos a Costa Rica a servir en el Campamento Brittney, que atiende a cientos de niños de escasos recursos.</p>
         <p>Estamos recaudando el dinero para los boletos de avión de los integrantes del grupo. Cada donativo, grande o pequeño, nos acerca a la meta.</p>
         <p>Si no puedes donar, también nos ayudas orando por el viaje y compartiendo esta página.</p>
+        <p class="enlace-campamento">
+          <a href="https://www.campbrittneyministries.org/" target="_blank" rel="noopener noreferrer">
+            Conoce el Campamento Brittney <span aria-hidden="true">→</span>
+          </a>
+          <span class="nota-enlace">Sitio oficial, en inglés</span>
+        </p>
       </div>
     </section>
 
