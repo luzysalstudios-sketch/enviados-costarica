@@ -528,7 +528,7 @@
           </div>
           <div class="cifra cifra--meta">
             <p class="etiqueta">Meta</p>
-            <p class="monto" id="monto-meta">$60,000 MXN</p>
+            <p class="monto" id="monto-meta">$40,000 MXN</p>
           </div>
         </div>
 
@@ -627,7 +627,7 @@
     // Cambia aquí la meta y el monto recaudado
     // (solo números, sin comas ni signo de pesos)
     // =========================================================
-    const META = 60000;
+    const META = 40000;
     const RECAUDADO = 50;
 
     // =========================================================
@@ -673,7 +673,23 @@
         versiculo: "¿Y cómo creerán en aquel de quien no han oído? ¿Y cómo oirán sin haber quien predique?",
         cita: "Romanos 10:14"
       },
-      { nombre: "Lalo", descripcion: "", foto: "" },
+      {
+        nombre: "Lalo",
+        foto: "assets/lalo.jpg",
+        intro: "¡Hola! Soy Eduardo Sandoval, pero me dicen “Sando”. Me congrego desde los 7 años, pero hace poco más de un año decidí acercarme a Dios de forma genuina y personal. Hoy busco servir a los demás, y así a Él, con los dones que me ha dado, como Cristo, que vino a servir y no a ser servido.",
+        listaTitulo: "Hoy sirvo en",
+        lista: [
+          "El Ministerio de Teens de mi iglesia local (VNPM Qro).",
+          "El Ministerio de Higiene de mi iglesia local (VNPM Qro).",
+          "El ministerio de Jóvenes +18 de Tribu Qro."
+        ],
+        porQue: [
+          "Para testificar y compartir el amor de Dios con niños y jóvenes de Costa Rica que viven en contextos adversos y atraviesan situaciones dolorosas.",
+          "Quiero que reciban el hermoso regalo del evangelio y vivan su amor, del cual nada ni nadie nos puede separar."
+        ],
+        versiculo: "Ni lo alto, ni lo profundo, ni ninguna otra cosa creada nos podrá separar del amor de Dios, que es en Cristo Jesús Señor nuestro.",
+        cita: "Romanos 8:39"
+      },
       { nombre: "Sharon", descripcion: "", foto: "" },
       { nombre: "Mariana", descripcion: "", foto: "" },
       { nombre: "Isaac", descripcion: "", foto: "" },
@@ -686,7 +702,7 @@
     const PAYMENT_LINK = "PEGAR_LINK_DE_MERCADO_PAGO_AQUI";
 
     // ---------------------------------------------------------
-    // Formato de pesos mexicanos: $60,000 MXN
+    // Formato de pesos mexicanos: $40,000 MXN
     // ---------------------------------------------------------
     const formatoPesos = new Intl.NumberFormat("es-MX", {
       style: "currency",
