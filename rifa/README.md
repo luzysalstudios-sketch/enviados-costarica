@@ -17,7 +17,9 @@ Los boletos vendidos se ven en negro y tachados.
    const VENDIDOS = [7, 8, 11, 12];
    ```
 
-3. Publica:
+3. En `index.html` sube el número de versión de `rifa.js?v=` y `rifa.css?v=` (por ejemplo de `v=2` a `v=3`).
+   Si no, los navegadores pueden seguir mostrando la lista anterior guardada en caché.
+4. Publica:
 
    ```bash
    git add rifa
