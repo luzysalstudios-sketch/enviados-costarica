@@ -795,10 +795,12 @@
       // Porcentaje real (puede pasar de 100%) y ancho de la barra (máximo 100%)
       const porcentaje = meta > 0 ? (recaudado / meta) * 100 : 0;
       const ancho = Math.min(porcentaje, 100);
-      // Con montos pequeños se muestra un decimal (ej. 0.1%) para que no diga 0%
-      const porcentajeTexto = (porcentaje > 0 && porcentaje < 1)
-        ? Math.max(porcentaje, 0.1).toFixed(1) + "%"
-        : Math.floor(porcentaje) + "%";
+      // Porcentaje con un decimal (ej. 3.8%). Se redondea hacia abajo para no
+      // marcar 100% antes de tiempo; con cualquier donativo muestra al menos 0.1%.
+      // Si el decimal es 0 se omite (ej. 4% en lugar de 4.0%).
+      let unDecimal = Math.floor(porcentaje * 10) / 10;
+      if (porcentaje > 0 && unDecimal < 0.1) unDecimal = 0.1;
+      const porcentajeTexto = unDecimal.toFixed(1).replace(/\.0$/, "") + "%";
       // La barra se ve al menos un poquito en cuanto hay algún donativo
       const anchoVisible = (ancho > 0 && ancho < 1.5) ? 1.5 : ancho;
 
