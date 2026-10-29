@@ -1,30 +1,22 @@
 /* =========================================================
    Rifa con causa · Enviados Costa Rica
-   Estilos compartidos (página pública y panel de administración)
+   Página de una sola vista, pensada para mandarse como captura.
    ========================================================= */
 
 /* Colores de la marca (manual de identidad Enviados) */
 :root {
-  --verde-musgo: #3E5C45;  /* principal */
-  --verde-oscuro: #2F4735; /* hover / bordes sobre verde */
-  --crema: #F5F0E6;        /* fondo base */
-  --crema-claro: #FBF8F2;  /* boletos disponibles */
-  --dorado: #E0A458;       /* acentos */
-  --azul-pizarra: #3B4F5C; /* secundario */
-  --carbon: #1F1F1F;       /* texto y boletos vendidos */
-  --terracota: #B5583A;    /* avisos */
+  --verde-musgo: #3E5C45;
+  --crema: #F5F0E6;
+  --crema-claro: #FBF8F2;
+  --dorado: #E0A458;
+  --azul-pizarra: #3B4F5C;
+  --carbon: #1F1F1F;
+  --borde: #D9CFBB;
 
   --fuente-titulos: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
   --fuente-texto: "Montserrat", "Segoe UI", Arial, sans-serif;
-
-  --ancho-max: 720px;
-  --margen-lateral: 16px;
-  --radio: 14px;
 }
 
-/* =========================================================
-   Base
-   ========================================================= */
 *, *::before, *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
@@ -34,232 +26,78 @@ body {
   background: var(--crema);
   color: var(--carbon);
   font-family: var(--fuente-texto);
-  font-size: 1rem;
-  line-height: 1.55;
-  overflow-x: hidden; /* sin scroll horizontal en celular */
+  line-height: 1.4;
+  overflow-x: hidden;
 }
-
-img { max-width: 100%; height: auto; display: block; }
 
 .contenedor {
   width: 100%;
-  max-width: var(--ancho-max);
+  max-width: 640px;
   margin: 0 auto;
-  padding: 0 var(--margen-lateral);
+  padding: 20px 16px 28px;
 }
 
-h1, h2, h3 {
-  font-family: var(--fuente-titulos);
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  line-height: 1;
-  margin: 0;
-}
-
-/* Solo para lectores de pantalla */
-.oculto {
-  position: absolute;
-  width: 1px; height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-
-/* =========================================================
-   Encabezado
-   ========================================================= */
+/* Título y logo */
 .encabezado {
-  position: relative;
-  padding: 28px 0 8px;
-}
-
-.encabezado__logo {
-  position: absolute;
-  top: 16px;
-  right: var(--margen-lateral);
-  width: 76px;
-  height: 76px;
-}
-
-.encabezado__textos { padding-right: 88px; }
-
-.encabezado__etiqueta {
-  margin: 0 0 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--verde-musgo);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .encabezado h1 {
-  font-size: clamp(3.2rem, 15vw, 5.5rem);
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-weight: 400;
+  font-size: clamp(3rem, 14vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
   color: var(--verde-musgo);
 }
 
 .encabezado h1 span { color: var(--dorado); }
 
-.encabezado__subtitulo {
-  margin: 14px 0 0;
-  max-width: 34em;
-  font-size: 1rem;
-}
+.encabezado__logo { width: 72px; height: 72px; flex-shrink: 0; }
 
-/* Datos rápidos: precio y fecha */
-.datos-rapidos {
+/* Precio y fecha */
+.datos {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 22px 0 0;
+  gap: 8px;
+  margin: 14px 0 18px;
   padding: 0;
   list-style: none;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
-.datos-rapidos li {
+.datos li {
   background: #fff;
   border: 2px solid var(--verde-musgo);
   border-radius: 999px;
-  padding: 6px 14px;
-  font-size: 0.9rem;
+  padding: 4px 11px;
 }
 
-.datos-rapidos strong {
+.datos strong {
   font-family: var(--fuente-titulos);
   font-weight: 400;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   letter-spacing: 0.03em;
   color: var(--verde-musgo);
-  margin-right: 4px;
 }
 
-/* =========================================================
-   Panel de premios (verde musgo, como el flyer)
-   ========================================================= */
-.premios {
-  margin: 28px 0 0;
-  background: var(--verde-musgo);
-  color: var(--crema);
-  border-radius: var(--radio);
-  padding: 24px 20px;
-}
-
-.premios h2 {
-  font-size: 2.2rem;
-  color: var(--dorado);
-  margin-bottom: 14px;
-}
-
-.premios ol {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 12px;
-}
-
-.premio {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 0;
-  border-top: 1px solid rgba(245, 240, 230, 0.2);
-}
-
-.premio:first-child { border-top: 0; padding-top: 0; }
-
-.premio__lugar {
-  font-family: var(--fuente-titulos);
-  font-size: 3rem;
-  line-height: 1;
-  color: var(--dorado);
-  min-width: 1.6em;
-  text-align: center;
-}
-
-.premio__lugar sup { font-size: 0.45em; vertical-align: top; position: relative; top: 0.25em; }
-
-.premio__nombre {
-  display: block;
-  font-family: var(--fuente-titulos);
-  font-size: 1.7rem;
-  letter-spacing: 0.03em;
-  line-height: 1.05;
-}
-
-.premio__valor { font-size: 0.85rem; opacity: 0.85; }
-
-/* En escritorio los tres premios van lado a lado */
-@media (min-width: 640px) {
-  .premios ol { grid-template-columns: repeat(3, 1fr); }
-  .premio {
-    grid-template-columns: 1fr;
-    text-align: center;
-    border-top: 0;
-    border-left: 1px solid rgba(245, 240, 230, 0.2);
-    padding: 0 8px;
-  }
-  .premio:first-child { border-left: 0; }
-}
-
-/* =========================================================
-   Contador y barra de progreso
-   ========================================================= */
-.progreso { margin: 32px 0 0; }
-
-.progreso__cifras {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 4px 16px;
-  font-weight: 600;
-}
-
-.progreso__cifras b { font-family: var(--fuente-titulos); font-weight: 400; font-size: 1.5rem; color: var(--verde-musgo); }
-
-.progreso__barra {
-  margin-top: 10px;
-  height: 14px;
-  background: #E4DCCB;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.progreso__relleno {
-  height: 100%;
-  width: 0;
-  background: var(--dorado);
-  border-radius: 999px;
-  transition: width 0.6s ease;
-}
-
-.progreso__meta { margin: 8px 0 0; font-size: 0.9rem; }
-
-/* =========================================================
-   Cuadrícula de boletos (10 x 10)
-   ========================================================= */
-.boletos { margin: 28px 0 0; }
-
-.boletos h2 { font-size: 2rem; color: var(--verde-musgo); }
-
-.boletos__ayuda { margin: 4px 0 12px; font-size: 0.9rem; }
-
+/* Cuadrícula 10 x 10 */
 .cuadricula {
   display: grid;
   grid-template-columns: repeat(10, minmax(0, 1fr));
-  gap: clamp(3px, 1vw, 8px);
-  transition: opacity 0.3s;
+  gap: clamp(3px, 1vw, 7px);
 }
 
-.cuadricula[aria-busy="true"] { opacity: 0.45; }
-
 .boleto {
-  appearance: none;
   aspect-ratio: 1;
-  min-width: 0;
-  padding: 0;
-  border: 1.5px solid #D9CFBB;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--borde);
   border-radius: 6px;
   background: var(--crema-claro);
   color: var(--verde-musgo);
@@ -267,25 +105,15 @@ h1, h2, h3 {
   font-size: clamp(0.95rem, 4.4vw, 1.6rem);
   letter-spacing: 0.02em;
   line-height: 1;
-  cursor: pointer;
   position: relative;
-  transition: transform 0.12s, background 0.12s, border-color 0.12s;
 }
 
-.boleto:hover:not(:disabled) { border-color: var(--verde-musgo); transform: translateY(-1px); }
-
-.boleto:focus-visible { outline: 3px solid var(--dorado); outline-offset: 2px; }
-
-.boleto:disabled { cursor: default; }
-
-/* Vendido: negro con número blanco tachado */
+/* Vendido: negro con el número tachado */
 .boleto--vendido {
   background: var(--carbon);
   border-color: var(--carbon);
-  color: #fff;
+  color: rgba(255, 255, 255, 0.75);
 }
-
-.boleto--vendido span { opacity: 0.75; }
 
 .boleto--vendido::after {
   content: "";
@@ -298,246 +126,37 @@ h1, h2, h3 {
   transform: rotate(-35deg);
 }
 
-.boleto--elegido {
-  background: var(--dorado);
-  border-color: var(--dorado);
-  color: var(--carbon);
-}
-
-/* Simbología */
-.simbologia {
-  display: flex;
-  gap: 18px;
-  margin: 12px 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.85rem;
-}
-
-.simbologia li { display: flex; align-items: center; gap: 6px; }
-
-.simbologia i {
-  width: 16px; height: 16px;
-  border-radius: 4px;
-  border: 1.5px solid #D9CFBB;
-  background: var(--crema-claro);
-}
-
-.simbologia i.vendido { background: var(--carbon); border-color: var(--carbon); }
-
-/* =========================================================
-   Avisos (error de carga, etc.)
-   ========================================================= */
-.aviso {
-  margin: 0 0 12px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  background: #F6E3DC;
-  border-left: 4px solid var(--terracota);
-  color: #6E2E1B;
-  font-size: 0.9rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.aviso[hidden] { display: none; }
-
-.aviso--ok { background: #E3EBE4; border-left-color: var(--verde-musgo); color: var(--verde-oscuro); }
-
-/* =========================================================
-   Botones
-   ========================================================= */
-.btn {
-  appearance: none;
-  border: 0;
-  border-radius: 999px;
-  padding: 12px 22px;
-  font-family: var(--fuente-texto);
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.btn--pagar { background: var(--dorado); color: var(--carbon); }
-.btn--pagar:hover { background: #D39445; }
-
-.btn--verde { background: var(--verde-musgo); color: var(--crema); }
-.btn--verde:hover { background: var(--verde-oscuro); }
-
-.btn--borde { background: transparent; color: inherit; border: 1.5px solid currentColor; }
-
-.btn--peligro { background: var(--terracota); color: #fff; }
-
-.btn--chico { padding: 6px 14px; font-size: 0.85rem; }
-
-.btn:disabled { opacity: 0.6; cursor: wait; }
-
-/* =========================================================
-   Barra de selección (página pública)
-   ========================================================= */
-.seleccion {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 10;
+/* Premios */
+.premios {
+  margin-top: 18px;
   background: var(--verde-musgo);
   color: var(--crema);
-  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.18);
-  padding: 14px 0 calc(14px + env(safe-area-inset-bottom));
-  transform: translateY(110%);
-  transition: transform 0.25s ease;
+  border-radius: 14px;
+  padding: 8px 16px;
 }
 
-.seleccion.abierta { transform: none; }
+.premios ol { margin: 0; padding: 0; list-style: none; }
 
-.seleccion__fila {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.premios li {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr auto;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(245, 240, 230, 0.2);
 }
 
-.seleccion__texto {
-  flex: 1;
-  min-width: 0;
+.premios li:first-child { border-top: 0; }
+
+.premio__lugar,
+.premio__nombre {
   font-family: var(--fuente-titulos);
-  font-size: 1.8rem;
   letter-spacing: 0.03em;
   line-height: 1;
 }
 
-.seleccion__cerrar {
-  appearance: none;
-  background: transparent;
-  border: 0;
-  color: var(--crema);
-  font-size: 1.6rem;
-  line-height: 1;
-  padding: 4px 6px;
-  cursor: pointer;
-}
+.premio__lugar { font-size: 1.7rem; color: var(--dorado); }
 
-.seleccion__nota { margin: 8px 0 0; font-size: 0.8rem; opacity: 0.9; }
+.premio__nombre { font-size: 1.5rem; }
 
-/* =========================================================
-   Cómo participar y pie
-   ========================================================= */
-.pasos { margin: 40px 0 0; }
-
-.pasos h2 { font-size: 2rem; color: var(--verde-musgo); margin-bottom: 8px; }
-
-.pasos ol { margin: 0; padding-left: 1.3em; }
-
-.pasos li { margin: 6px 0; }
-
-.pie {
-  margin-top: 48px;
-  padding: 24px 0 120px; /* espacio para la barra de selección */
-  border-top: 1px solid #E0D7C5;
-  font-size: 0.85rem;
-  text-align: center;
-  color: var(--azul-pizarra);
-}
-
-.pie a { color: var(--verde-musgo); font-weight: 600; }
-
-/* =========================================================
-   Panel de administración
-   ========================================================= */
-.login {
-  max-width: 360px;
-  margin: 40px auto 0;
-  background: #fff;
-  border-radius: var(--radio);
-  padding: 24px 20px;
-  box-shadow: 0 4px 20px rgba(31, 31, 31, 0.06);
-}
-
-.login h2 { font-size: 2rem; color: var(--verde-musgo); margin-bottom: 12px; }
-
-.campo { display: block; margin: 0 0 14px; }
-
-.campo span { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
-
-.campo input {
-  width: 100%;
-  padding: 11px 12px;
-  border: 1.5px solid #CFC4AE;
-  border-radius: 10px;
-  font: inherit;
-  background: #fff;
-  color: var(--carbon);
-}
-
-.campo input:focus { outline: none; border-color: var(--verde-musgo); box-shadow: 0 0 0 3px rgba(62, 92, 69, 0.15); }
-
-.error-form { color: var(--terracota); font-size: 0.85rem; margin: 0 0 12px; min-height: 1.2em; }
-
-.barra-admin {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 18px 0 0;
-  padding: 10px 14px;
-  background: var(--azul-pizarra);
-  color: var(--crema);
-  border-radius: 10px;
-  font-size: 0.9rem;
-}
-
-/* Lista de compradores */
-.compradores { margin: 36px 0 0; }
-
-.compradores h2 { font-size: 2rem; color: var(--verde-musgo); margin-bottom: 10px; }
-
-.tabla {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.tabla th, .tabla td { padding: 9px 10px; text-align: left; border-bottom: 1px solid #EEE7D8; vertical-align: top; }
-
-.tabla th { background: var(--verde-musgo); color: var(--crema); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
-
-.tabla td:first-child { font-family: var(--fuente-titulos); font-size: 1.2rem; color: var(--verde-musgo); white-space: nowrap; }
-
-.tabla__tel { display: block; font-size: 0.8rem; color: var(--azul-pizarra); }
-
-.tabla__vacia { text-align: center; color: var(--azul-pizarra); padding: 18px; }
-
-/* Ventana para vender / editar / liberar */
-.ventana {
-  width: min(420px, calc(100vw - 32px));
-  border: 0;
-  border-radius: var(--radio);
-  padding: 22px 20px;
-  background: var(--crema);
-  color: var(--carbon);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.ventana::backdrop { background: rgba(31, 31, 31, 0.55); }
-
-.ventana h2 { font-size: 2.2rem; color: var(--verde-musgo); margin-bottom: 4px; }
-
-.ventana__info { margin: 0 0 16px; font-size: 0.85rem; color: var(--azul-pizarra); }
-
-.ventana__botones { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
-
-.ventana__botones .btn--peligro { margin-right: auto; }
-
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
-}
+.premio__valor { font-size: 0.8rem; opacity: 0.85; white-space: nowrap; }
