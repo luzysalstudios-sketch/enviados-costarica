@@ -98,6 +98,11 @@ async function cargar() {
     pintar();
   } catch (err) {
     console.warn("No se pudieron cargar los boletos:", err);
+    // En el panel se explica qué falta configurar; al público solo se le pide reintentar
+    if (esAdmin && !SCRIPT_URL.startsWith("http")) {
+      mostrarAviso("Todavía no está conectada la hoja de Google. Falta desplegar el Apps Script y pegar su URL en SCRIPT_URL de rifa.js (README, pasos 2 y 3). Sin eso los boletos no se pueden guardar.");
+      return;
+    }
     mostrarAviso(cargado
       ? "No pudimos actualizar los boletos, intenta de nuevo. Mostramos el último estado conocido."
       : "No pudimos cargar los boletos, intenta de nuevo");
