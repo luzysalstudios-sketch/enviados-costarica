@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rifa con causa | Enviados</title>
+  <meta name="description" content="Compra tu boleto y apoya la misión Enviados a Costa Rica. Sorteo el 4 de diciembre de 2026.">
+  <meta name="theme-color" content="#3E5C45">
+
+  <link rel="icon" type="image/png" href="../assets/globo.png">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+
+  <!-- Datos para cuando se comparte el enlace en redes -->
+  <meta property="og:title" content="Rifa con causa | Enviados">
+  <meta property="og:description" content="Boletos de $180 MXN. AirPods Pro 3, bocina JBL y Alexa Echo Pop. Sorteo el 4 de diciembre de 2026.">
+  <meta property="og:type" content="website">
+
+  <!-- Tipografías del manual: Bebas Neue (títulos) y Montserrat (texto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="rifa.css">
+</head>
+<body data-modo="publico">
+
+  <header class="encabezado contenedor">
+    <img class="encabezado__logo" src="Enviados_Logo_RS.png" alt="Enviados" width="76" height="76">
+    <div class="encabezado__textos">
+      <p class="encabezado__etiqueta">Enviados · Tribu de los servidores</p>
+      <h1>Rifa con <span>causa</span></h1>
+    </div>
+    <p class="encabezado__subtitulo">Tu apoyo hace posible esta misión. Juntos llevamos el mensaje de Cristo, amor y esperanza a niños de Costa Rica.</p>
+    <ul class="datos-rapidos">
+      <li><strong>$180 MXN</strong> por boleto</li>
+      <li><strong>4 dic 2026</strong> sorteo</li>
+    </ul>
+  </header>
+
+  <main class="contenedor">
+
+    <!-- Premios -->
+    <section class="premios" aria-labelledby="titulo-premios">
+      <h2 id="titulo-premios">Premios</h2>
+      <ol>
+        <li class="premio">
+          <span class="premio__lugar">1<sup>er</sup></span>
+          <div>
+            <span class="premio__nombre">AirPods Pro 3</span>
+            <span class="premio__valor">Valor $2,360</span>
+          </div>
+        </li>
+        <li class="premio">
+          <span class="premio__lugar">2<sup>do</sup></span>
+          <div>
+            <span class="premio__nombre">Bocina JBL</span>
+            <span class="premio__valor">Valor $1,563</span>
+          </div>
+        </li>
+        <li class="premio">
+          <span class="premio__lugar">3<sup>er</sup></span>
+          <div>
+            <span class="premio__nombre">Alexa Echo Pop</span>
+            <span class="premio__valor">Valor $850</span>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Contador y progreso -->
+    <section class="progreso" aria-label="Avance de la rifa">
+      <div class="progreso__cifras">
+        <span>Vendidos: <b id="vendidos">0</b> / 100 · Disponibles: <b id="disponibles">100</b></span>
+        <span id="porcentaje">0%</span>
+      </div>
+      <div class="progreso__barra" id="barra" role="progressbar" aria-label="Recaudación hacia la meta" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="progreso__relleno" id="relleno"></div>
+      </div>
+      <p class="progreso__meta">Recaudado <strong id="recaudado">$0 MXN</strong> de <strong id="meta">$18,000 MXN</strong></p>
+    </section>
+
+    <!-- Boletos -->
+    <section class="boletos" aria-labelledby="titulo-boletos">
+      <h2 id="titulo-boletos">Elige tu boleto</h2>
+      <p class="boletos__ayuda">Toca un número disponible para comprarlo.</p>
+
+      <div class="aviso" id="aviso" role="status" hidden>
+        <span id="aviso-texto"></span>
+        <button type="button" class="btn btn--borde btn--chico" id="aviso-reintentar">Reintentar</button>
+      </div>
+
+      <div class="cuadricula" id="cuadricula" aria-busy="true"></div>
+
+      <ul class="simbologia">
+        <li><i></i> Disponible</li>
+        <li><i class="vendido"></i> Vendido</li>
+      </ul>
+    </section>
+
+    <!-- Cómo participar -->
+    <section class="pasos" aria-labelledby="titulo-pasos">
+      <h2 id="titulo-pasos">Cómo participar</h2>
+      <ol>
+        <li>Elige un número disponible en la cuadrícula.</li>
+        <li>Toca <strong>Pagar boleto</strong> y paga $180 MXN con Mercado Pago.</li>
+        <li>Guarda tu comprobante y envíalo a quien te compartió la rifa, con tu número de boleto.</li>
+        <li>En cuanto confirmemos tu pago, tu boleto aparecerá como vendido.</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="pie contenedor">
+    <p>Sorteo el 4 de diciembre de 2026 · <a href="../">Conoce la misión Enviados</a></p>
+  </footer>
+
+  <!-- Barra que aparece al elegir un boleto -->
+  <div class="seleccion" id="seleccion" aria-hidden="true" aria-live="polite">
+    <div class="contenedor">
+      <div class="seleccion__fila">
+        <span class="seleccion__texto" id="seleccion-texto">Boleto 00 · $180 MXN</span>
+        <a class="btn btn--pagar" id="pagar" href="#" target="_blank" rel="noopener">Pagar boleto</a>
+        <button type="button" class="seleccion__cerrar" id="seleccion-cerrar" aria-label="Cerrar">×</button>
+      </div>
+      <p class="seleccion__nota">Después de pagar, envía tu comprobante con el número de boleto.</p>
+    </div>
+  </div>
+
+  <script src="rifa.js"></script>
+</body>
+</html>
