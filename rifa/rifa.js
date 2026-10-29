@@ -5,7 +5,7 @@
 
 // Boletos vendidos o apartados. Se copian de la hoja de Google
 // "Rifa con causa · Enviados Costa Rica" (pestaña Boletos, Estado = Vendido).
-const VENDIDOS = [7, 8, 11, 12, 14, 17, 21, 24, 30, 33, 40, 43, 77];
+const VENDIDOS = [7, 8, 11, 12, 14, 16, 17, 21, 24, 27, 30, 33, 40, 43, 77];
 
 const TOTAL_BOLETOS = 100;
 
